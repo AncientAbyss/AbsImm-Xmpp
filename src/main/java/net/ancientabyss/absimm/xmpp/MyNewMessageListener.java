@@ -29,7 +29,7 @@ public class MyNewMessageListener implements ReactionClient, ChatMessageListener
         story.addClient(this);
         try {
             story.tell();
-        } catch (StoryException | SmackException.NotConnectedException e) {
+        } catch (StoryException e) {
             LOG.severe("Failed telling story: " + e.getMessage());
         }
     }
@@ -80,7 +80,7 @@ public class MyNewMessageListener implements ReactionClient, ChatMessageListener
     }
 
     @Override
-    public void reaction(String text) throws SmackException.NotConnectedException {
+    public void reaction(String text) {
         try {
             // TODO: the message is not delivered properly if sent as a whole in fb
             for (String part : text.split("\\\\n")) {
@@ -88,7 +88,7 @@ public class MyNewMessageListener implements ReactionClient, ChatMessageListener
                 LOG.info(": " + part);
                 sendMessageToAllClients(part);
             }
-        } catch (XMPPException | InterruptedException e) {
+        } catch (XMPPException | InterruptedException | SmackException.NotConnectedException e) {
             LOG.severe(e.getMessage());
         }
     }
